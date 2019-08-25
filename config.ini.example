@@ -1,0 +1,8 @@
+[coinbasepro]
+secret = YOUR_SECRET
+api_key = YOUR_API_KEY
+password = YOUR_PASSWORD
+fiat = EUR
+crypto = BTC
+fee = 0.002
+delay = 3600
