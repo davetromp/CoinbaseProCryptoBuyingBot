@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # coding=utf-8
 
+import datetime
 from time import sleep
 import configparser
 import ccxt
@@ -26,6 +27,8 @@ def main():
     try:
         while True:
             balance = float(coinbasepro.fetch_balance()[fiat]['free'])
+            print("#####################")
+            print(datetime.datetime.now())
             print("Current fiat ({}) balance is {}.".format(fiat, balance))
             if balance > 0:
                 rate = float(coinbasepro.fetch_ticker(ticker)['ask'])
@@ -35,6 +38,7 @@ def main():
                     coinbasepro.create_market_buy_order(ticker, ordersize)
                 except Exception as e:
                     print(e)
+                print("#####################")
             sleep(delay)
     except KeyboardInterrupt:
         print("\nCancelled by user")
