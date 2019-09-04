@@ -29,18 +29,30 @@ coinbasepro = ccxt.coinbasepro({
 def main():
     try:
         while True:
-            fiat_balance = float(coinbasepro.fetch_balance()[fiat]['free'])
+            try:
+                fiat_balance = float(coinbasepro.fetch_balance()[fiat]['free'])
+            except Exception as e:
+                fiat_balance = -1
+                print("Failed to retreive fiat balance")
+                print(e)
             print("#####################")
             print(datetime.datetime.now())
-            print("Current fiat ({}) balance is {}.".format(fiat, fiat_balance))
             if fiat_balance > 0:
-                rate = float(coinbasepro.fetch_ticker(ticker)['ask'])
-                ordersize = (fiat_balance / rate) * (1.0 - fee)
-                print("Placing a market buy order.\nOrdersize: {}\nTicker: {}\nCurrent price: {}".format(ordersize, ticker, rate))
+                print("Current fiat ({}) balance is {}.".format(fiat, fiat_balance))
                 try:
-                    coinbasepro.create_market_buy_order(ticker, ordersize)
+                    rate = float(coinbasepro.fetch_ticker(ticker)['ask'])
                 except Exception as e:
+                    rate = -1
+                    print("Failed to retreive rate")
                     print(e)
+                if fiat_balance > 0 and rate > 0:
+                    ordersize = (fiat_balance / rate) * (1.0 - fee)
+                    print("Placing a market buy order.\nOrdersize: {}\nTicker: {}\nCurrent price: {}".format(ordersize, ticker, rate))
+                    try:
+                        coinbasepro.create_market_buy_order(ticker, ordersize)
+                    except Exception as e:
+                        print("Failed to create market buy order.")
+                        print(e)
             crypto_balance = float(coinbasepro.fetch_balance()[crypto]['free'])
             if crypto_balance > withdrawThreshold and withdraw == True:
                 print("Sending {} of {} to {}.".format(crypto_balance, crypto, toAddress))
