@@ -1,6 +1,9 @@
 # CoinbaseProCryptoBuyingBot
 This script will buy Bitcoin or any other Crypto on Coinbase Pro as soon as there is a Fiat balance available.
 
+# No longer working
+This script is no longer working as Coinbase Pro has been replaced by Coinbase Advanced!
+
 ## Installation
 Make sure pip and python3 is installed.
 Install the needed requirements by doing:
